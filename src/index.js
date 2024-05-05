@@ -1,5 +1,6 @@
 import './pages/index.css';
 import { initialCards } from './components/cards.js';
+import { renderCards } from './components/cards.js';
 import { openPopup } from './components/modal.js';
 import {
     addEditProfileSubmitListener,

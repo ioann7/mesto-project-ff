@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 import { closePopup } from './modal.js';
 import { renderCards } from './card.js';
-=======
-import { closePopup } from './modal';
-import { renderCards } from './cards';
->>>>>>> 22242484578f40c7c227e09dee03397478519cf4
 
 const addSubmitListener = (formElement, popupForClose, onSubmit) => {
     const handleFormSubmit = (evt) => {
