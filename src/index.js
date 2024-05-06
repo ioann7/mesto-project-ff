@@ -1,6 +1,6 @@
 import './pages/index.css';
 import { initialCards } from './components/cards.js';
-import { renderCards } from './components/cards.js';
+import { createCard, classCardLikeIsActive } from './components/card.js';
 import { openPopup } from './components/modal.js';
 import {
     addEditProfileSubmitListener,
@@ -35,6 +35,35 @@ const newCardInputName = newCardForm.querySelector(
 );
 const newCardInputUrl = newCardForm.querySelector('.popup__input_type_url');
 
+const deleteCardHandler = (card) => {
+    card.remove();
+};
+
+const likeCardHandler = (evt) => {
+    evt.currentTarget.classList.toggle(classCardLikeIsActive);
+};
+
+const enlargeCardImageHandler = (link, name) => {
+    imageInPopup.src = link;
+    imageInPopup.alt = name;
+    captionInPopup.textContent = name;
+    openPopup(popupImgType);
+};
+
+const renderCards = (cards) => {
+    cards.forEach((cardData) => {
+        placesList.append(
+            createCard(
+                cardData,
+                cardTemplate,
+                deleteCardHandler,
+                likeCardHandler,
+                enlargeCardImageHandler
+            )
+        );
+    });
+};
+
 const addListenersToPopups = () => {
     addButton.addEventListener('click', () => {
         openPopup(popupNewCard);
@@ -45,19 +74,9 @@ const addListenersToPopups = () => {
         editProfileInputName.value = profileTitle.textContent;
         editProfileInputDescription.value = profileDescription.textContent;
     });
-
-    placesList.addEventListener('click', (evt) => {
-        const image = evt.target;
-        if (image.classList.contains('card__image')) {
-            imageInPopup.src = image.src;
-            imageInPopup.alt = image.alt;
-            captionInPopup.textContent = image.alt;
-            openPopup(popupImgType);
-        }
-    });
 };
 
-renderCards(initialCards, cardTemplate, placesList);
+renderCards(initialCards);
 addListenersToPopups();
 addEditProfileSubmitListener(
     editProfileForm,
@@ -73,5 +92,8 @@ addCreateCardSubmitListener(
     newCardInputUrl,
     cardTemplate,
     placesList,
-    popupNewCard
+    popupNewCard,
+    deleteCardHandler,
+    likeCardHandler,
+    enlargeCardImageHandler
 );

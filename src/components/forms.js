@@ -1,5 +1,5 @@
 import { closePopup } from './modal.js';
-import { renderCards } from './card.js';
+import { createCard } from './card.js';
 
 const addSubmitListener = (formElement, popupForClose, onSubmit) => {
     const handleFormSubmit = (evt) => {
@@ -35,17 +35,26 @@ export const addCreateCardSubmitListener = (
     inputUrl,
     cardTemplate,
     placesList,
-    popupForClose
+    popupForClose,
+    deleteCardHandler,
+    likeCardHandler,
+    enlargeCardImageHandler
 ) => {
     const onSubmit = () => {
-        const cards = [
-            {
-                name: inputName.value,
-                link: inputUrl.value,
-            },
-        ];
+        const cardData = {
+            name: inputName.value,
+            link: inputUrl.value,
+        };
 
-        renderCards(cards, cardTemplate, placesList);
+        placesList.prepend(
+            createCard(
+                cardData,
+                cardTemplate,
+                deleteCardHandler,
+                likeCardHandler,
+                enlargeCardImageHandler
+            )
+        );
     };
 
     addSubmitListener(formElement, popupForClose, onSubmit);
