@@ -1,4 +1,10 @@
-export const classCardLikeIsActive = 'card__like-button_is-active';
+export const deleteCardHandler = (card) => {
+    card.remove();
+};
+
+export const likeCardHandler = (evt) => {
+    evt.currentTarget.classList.toggle('card__like-button_is-active');
+};
 
 export const createCard = (
     data,

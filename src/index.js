@@ -1,6 +1,6 @@
 import './pages/index.css';
 import { initialCards } from './components/cards.js';
-import { createCard, classCardLikeIsActive } from './components/card.js';
+import { createCard, deleteCardHandler, likeCardHandler } from './components/card.js';
 import { openPopup } from './components/modal.js';
 import {
     addEditProfileSubmitListener,
@@ -34,14 +34,6 @@ const newCardInputName = newCardForm.querySelector(
     '.popup__input_type_card-name'
 );
 const newCardInputUrl = newCardForm.querySelector('.popup__input_type_url');
-
-const deleteCardHandler = (card) => {
-    card.remove();
-};
-
-const likeCardHandler = (evt) => {
-    evt.currentTarget.classList.toggle(classCardLikeIsActive);
-};
 
 const enlargeCardImageHandler = (link, name) => {
     imageInPopup.src = link;
