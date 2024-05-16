@@ -1,5 +1,7 @@
 import { closePopup } from './modal.js';
 import { createCard } from './card.js';
+import { editMyProfile } from './api.js';
+import { createCard as createCardRequest } from './api.js';
 
 const addSubmitListener = (formElement, popupForClose, onSubmit) => {
     const handleFormSubmit = (evt) => {
@@ -17,13 +19,18 @@ const addSubmitListener = (formElement, popupForClose, onSubmit) => {
 
 export const addEditProfileSubmitListener = (
     formElement,
-    fieldsPairs,
+    nameElements,
+    aboutElements,
     popupForClose
 ) => {
+    const [nameField, nameInput] = nameElements;
+    const [aboutField, aboutInput] = aboutElements;
+
     const onSubmit = () => {
-        for (const [viewField, inputField] of fieldsPairs) {
-            viewField.textContent = inputField.value;
-        }
+        editMyProfile(nameInput.value, aboutInput.value).then((response) => {
+            nameField.textContent = response.name;
+            aboutField.textContent = response.about;
+        });
     };
 
     addSubmitListener(formElement, popupForClose, onSubmit);
@@ -38,23 +45,29 @@ export const addCreateCardSubmitListener = (
     popupForClose,
     deleteCardHandler,
     likeCardHandler,
-    enlargeCardImageHandler
+    enlargeCardImageHandler,
+    userId
 ) => {
     const onSubmit = () => {
-        const cardData = {
-            name: inputName.value,
-            link: inputUrl.value,
-        };
+        createCardRequest(inputName.value, inputUrl.value).then((response) => {
+            const cardData = {
+                name: response.name,
+                link: response.link,
+                likes: response.likes,
+            };
+            placesList.prepend(
+                createCard(
+                    cardData,
+                    userId,
+                    cardTemplate,
+                    deleteCardHandler,
+                    likeCardHandler,
+                    enlargeCardImageHandler
+                )
+            );
 
-        placesList.prepend(
-            createCard(
-                cardData,
-                cardTemplate,
-                deleteCardHandler,
-                likeCardHandler,
-                enlargeCardImageHandler
-            )
-        );
+            formElement.reset();
+        });
     };
 
     addSubmitListener(formElement, popupForClose, onSubmit);

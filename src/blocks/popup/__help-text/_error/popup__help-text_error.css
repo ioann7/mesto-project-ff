@@ -1,0 +1,12 @@
+.popup__help-text_error {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255, 0, 0, 1);
+  opacity: 0;
+  position: absolute;
+  margin-block-start: -5px;
+}
+
+.popup__help-text_error:last-of-type {
+  margin-block-start: 5px;
+}
