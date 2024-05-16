@@ -1,0 +1,4 @@
+.popup__help-text_error_visible {
+  display: block;
+  opacity: 1;
+}
