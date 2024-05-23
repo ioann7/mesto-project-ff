@@ -1,13 +1,23 @@
 import { closePopup } from './modal.js';
 import { createCard } from './card.js';
-import { editMyProfile } from './api.js';
-import { createCard as createCardRequest } from './api.js';
+import {
+    createCard as createCardRequest,
+    editMyProfile,
+    editMyAvatar,
+} from './api.js';
+
+const renderSaving = (isSaving, button) => {
+    button.textContent = isSaving ? 'Сохранение...' : 'Сохранить';
+};
 
 const addSubmitListener = (formElement, popupForClose, onSubmit) => {
     const handleFormSubmit = (evt) => {
         evt.preventDefault();
 
-        onSubmit();
+        const submitButton = formElement.querySelector('.popup__button');
+        renderSaving(true, submitButton);
+
+        onSubmit().finally(() => renderSaving(false, submitButton));
 
         if (popupForClose !== undefined) {
             closePopup(popupForClose);
@@ -27,9 +37,21 @@ export const addEditProfileSubmitListener = (
     const [aboutField, aboutInput] = aboutElements;
 
     const onSubmit = () => {
-        editMyProfile(nameInput.value, aboutInput.value).then((response) => {
-            nameField.textContent = response.name;
-            aboutField.textContent = response.about;
+        return editMyProfile(nameInput.value, aboutInput.value).then(
+            (response) => {
+                nameField.textContent = response.name;
+                aboutField.textContent = response.about;
+            }
+        );
+    };
+
+    addSubmitListener(formElement, popupForClose, onSubmit);
+};
+
+export const addEditAvatarSubmitListener = (formElement, inputUrl, profileImage, popupForClose) => {
+    const onSubmit = () => {
+        return editMyAvatar(inputUrl.value).then((response) => {
+            profileImage.style = `background-image: url('${response.avatar}')`;
         });
     };
 
@@ -49,25 +71,22 @@ export const addCreateCardSubmitListener = (
     userId
 ) => {
     const onSubmit = () => {
-        createCardRequest(inputName.value, inputUrl.value).then((response) => {
-            const cardData = {
-                name: response.name,
-                link: response.link,
-                likes: response.likes,
-            };
-            placesList.prepend(
-                createCard(
-                    cardData,
-                    userId,
-                    cardTemplate,
-                    deleteCardHandler,
-                    likeCardHandler,
-                    enlargeCardImageHandler
-                )
-            );
+        return createCardRequest(inputName.value, inputUrl.value).then(
+            (response) => {
+                placesList.prepend(
+                    createCard(
+                        response,
+                        userId,
+                        cardTemplate,
+                        deleteCardHandler,
+                        likeCardHandler,
+                        enlargeCardImageHandler
+                    )
+                );
 
-            formElement.reset();
-        });
+                formElement.reset();
+            }
+        );
     };
 
     addSubmitListener(formElement, popupForClose, onSubmit);

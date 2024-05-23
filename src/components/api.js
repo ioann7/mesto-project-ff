@@ -52,6 +52,18 @@ export const deleteCard = (cardId) => {
     });
 };
 
+export const likeCard = (cardId) => {
+    return makeRequest(`cards/likes/${cardId}`, {
+        method: 'PUT',
+    });
+};
+
+export const unLikeCard = (cardId) => {
+    return makeRequest(`cards/likes/${cardId}`, {
+        method: 'DELETE',
+    });
+};
+
 export const getMyProfile = () => {
     return makeRequest('users/me');
 };
@@ -62,6 +74,15 @@ export const editMyProfile = (name, about) => {
         body: JSON.stringify({
             name: name,
             about: about,
+        }),
+    });
+};
+
+export const editMyAvatar = (avatarLink) => {
+    return makeRequest('users/me/avatar', {
+        method: 'PATCH',
+        body: JSON.stringify({
+            avatar: avatarLink,
         }),
     });
 };

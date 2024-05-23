@@ -2,8 +2,24 @@ export const deleteCardHandler = (card) => {
     card.remove();
 };
 
-export const likeCardHandler = (evt) => {
-    evt.currentTarget.classList.toggle('card__like-button_is-active');
+export const likeCardHandler = (cardLikeCount) => {
+    cardLikeCount.classList.toggle('card__like-button_is-active');
+};
+
+const isCardLiked = (likes, userId) => {
+    return likes.some((like) => {
+        return (like._id === userId);
+    });
+};
+
+export const setCardLikeInfo = (cardLikeButton, cardLikeCount, likes, userId) => {
+    cardLikeCount.textContent = likes.length;
+
+    if (isCardLiked(likes, userId)) {
+        cardLikeButton.classList.add('card__like-button_is-active');
+    } else {
+        cardLikeButton.classList.remove('card__like-button_is-active');
+    }
 };
 
 export const createCard = (
@@ -28,7 +44,19 @@ export const createCard = (
     cardImage.alt = data.name;
     cardLikeCount.textContent = data.likes.length;
 
-    cardLikeButton.addEventListener('click', likeHandler);
+    setCardLikeInfo(cardLikeButton, cardLikeCount, data.likes, userId);
+
+    if (data.owner._id === userId) {
+        cardDeleteButton.addEventListener('click', () =>
+            deleteHandler(cardElement)
+        );
+    } else {
+        cardDeleteButton.remove()
+    }
+
+    cardLikeButton.addEventListener('click', () => 
+        likeHandler(cardLikeButton, cardLikeCount, cardElement, userId)
+    );
 
     if (data.owner._id === userId) {
         cardDeleteButton.addEventListener('click', () =>
