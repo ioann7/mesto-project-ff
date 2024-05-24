@@ -14,12 +14,7 @@ const isCardLiked = (likes, userId) => {
 
 export const setCardLikeInfo = (cardLikeButton, cardLikeCount, likes, userId) => {
     cardLikeCount.textContent = likes.length;
-
-    if (isCardLiked(likes, userId)) {
-        cardLikeButton.classList.add('card__like-button_is-active');
-    } else {
-        cardLikeButton.classList.remove('card__like-button_is-active');
-    }
+    cardLikeButton.classList.toggle('card__like-button_is-active', isCardLiked(likes, userId));
 };
 
 export const createCard = (

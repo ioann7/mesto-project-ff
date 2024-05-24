@@ -28,8 +28,7 @@ const makeRequest = (url, requestOptions) => {
             }
 
             return Promise.reject(`Ошибка: ${res.status}`);
-        })
-        .catch((err) => console.error(err));
+        });
 };
 
 export const getInitialCards = () => {

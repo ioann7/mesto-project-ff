@@ -69,7 +69,7 @@ const enlargeCardImageHandler = (link, name) => {
 const deleteCardHandler = (cardElement) => {
     deleteCard(cardElement.dataset.id).then((response) => {
         cardElement.remove();
-    });
+    }).catch((err) => console.error(err));
 };
 
 const likeCardHandler = (
@@ -82,15 +82,12 @@ const likeCardHandler = (
         setCardLikeInfo(cardLikeButton, cardLikeCount, response.likes, userId);
     };
 
-    if (cardLikeButton.classList.contains('card__like-button_is-active')) {
-        unLikeCard(cardElement.dataset.id).then((resp) => {
+    const likeMethod = cardLikeButton.classList.contains('card__like-button_is-active') ? unLikeCard : likeCard;
+    likeMethod(cardElement.dataset.id)
+        .then((resp) => {
             renderResponse(resp);
-        });
-    } else {
-        likeCard(cardElement.dataset.id).then((resp) => {
-            renderResponse(resp);
-        });
-    }
+        })
+        .catch((err) => console.log(err));
 };
 
 const renderCards = (cards, userId) => {

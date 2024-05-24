@@ -13,6 +13,7 @@ export const clearValidation = (formElement, validationConfig) => {
     const inputList = Array.from(formElement.querySelectorAll(inputSelector));
     const submitButtonElement = formElement.querySelector(submitButtonSelector);
 
+    formElement.reset();
     inputList.forEach((inputElement) => {
         hideInputError(formElement, inputElement, validationConfig);
     });

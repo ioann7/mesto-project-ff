@@ -37,12 +37,12 @@ export const addEditProfileSubmitListener = (
     const [aboutField, aboutInput] = aboutElements;
 
     const onSubmit = () => {
-        return editMyProfile(nameInput.value, aboutInput.value).then(
-            (response) => {
+        return editMyProfile(nameInput.value, aboutInput.value)
+            .then((response) => {
                 nameField.textContent = response.name;
                 aboutField.textContent = response.about;
-            }
-        );
+            })
+            .catch((err) => console.error(err));;
     };
 
     addSubmitListener(formElement, popupForClose, onSubmit);
@@ -50,9 +50,11 @@ export const addEditProfileSubmitListener = (
 
 export const addEditAvatarSubmitListener = (formElement, inputUrl, profileImage, popupForClose) => {
     const onSubmit = () => {
-        return editMyAvatar(inputUrl.value).then((response) => {
-            profileImage.style = `background-image: url('${response.avatar}')`;
-        });
+        return editMyAvatar(inputUrl.value)
+            .then((response) => {
+                profileImage.style = `background-image: url('${response.avatar}')`;
+            })
+            .catch((err) => console.error(err));
     };
 
     addSubmitListener(formElement, popupForClose, onSubmit);
@@ -86,7 +88,7 @@ export const addCreateCardSubmitListener = (
 
                 formElement.reset();
             }
-        );
+        ).catch((err) => console.error(err));
     };
 
     addSubmitListener(formElement, popupForClose, onSubmit);
